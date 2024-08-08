@@ -13,7 +13,7 @@ class Mario:
 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
-        self.memory = TensorDictReplayBuffer(storage=LazyMemmapStorage(100000, device=torch.device("cpu")))
+        self.memory = TensorDictReplayBuffer(storage=LazyMemmapStorage(10000, device=torch.device("cpu")))
         self.batch_size = 32
 
         # Mario's DNN to predict the most optimal action - we implement this in the Learn section
@@ -25,7 +25,7 @@ class Mario:
         self.exploration_rate_min = 0.1
         self.curr_step = 0
 
-        self.save_every = 5e5  # no. of experiences between saving Mario Net
+        self.save_every = 10000  # no. of experiences between saving Mario Net
 
         self.gamma = 0.9
 
