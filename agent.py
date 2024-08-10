@@ -165,6 +165,11 @@ class Mario:
 
         return (td_est.mean().item(), loss)
 
+    def load_state_dict(self, path_state_dict):
+        checkpoint = torch.load(path_state_dict, map_location=self.device)
+        state_dict = checkpoint["model"]
+        self.net.load_state_dict(state_dict)
+
 class MarioNet(nn.Module):
     """mini CNN structure
   input -> (conv2d + relu) x 3 -> flatten -> (dense + relu) x 2 -> output
