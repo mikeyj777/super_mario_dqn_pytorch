@@ -1,6 +1,6 @@
 import itertools
 import gym_super_mario_bros
-from agent import Mario
+from agent_rev2 import Mario
 
 from visual_preprocessing import *
 
@@ -15,7 +15,7 @@ env = gym_super_mario_bros.make("SuperMarioBros-1-1-v0", render_mode='human', ap
 env = JoypadSpace(env, [["right"], ["right", "A"]])
 
 mario = Mario(state_dim=(4, 84, 84), action_dim=env.action_space.n, save_dir=None)
-mario.load_state_dict(path_state_dict='trained_model/mario_net_580.chkpt')
+mario.load_state_dict(path_state_dict='trained_model/mario_net.chkpt')
 mario.net.eval()
 mario.exploration_rate = -1
 

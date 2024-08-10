@@ -101,10 +101,6 @@ class Mario:
         state, next_state, action, reward, done = (batch.get(key) for key in ("state", "next_state", "action", "reward", "done"))
         return state, next_state, action.squeeze(), reward.squeeze(), done.squeeze()
 
-    def learn(self):
-        """Update online action value (Q) function with a batch of experiences"""
-        pass
-
     def td_estimate(self, state, action):
         current_Q = self.net(state, model="online")[
             np.arange(0, self.batch_size), action
@@ -132,7 +128,7 @@ class Mario:
     
     def save(self):
         save_path = (
-            self.save_dir / f"mario_net_{int(self.curr_step // self.save_every)}.chkpt"
+            self.save_dir / f"mario_net.chkpt"
         )
         torch.save(
             dict(model=self.net.state_dict(), exploration_rate=self.exploration_rate),
