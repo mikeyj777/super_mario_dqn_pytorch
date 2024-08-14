@@ -1,3 +1,4 @@
+import copy
 import numpy as np
 import torch
 from torch import nn
@@ -165,10 +166,17 @@ class Mario:
 
     def load_state_dict(self, path_state_dict):
         checkpoint = torch.load(path_state_dict, map_location=self.device)
-        weights = checkpoint["model"]
+        weights = copy.deepcopy(checkpoint["model"])
         online_weights = {}
         for k, v in weights.items():
             if 'online' in k:
                 k = k[7:]
                 online_weights[k] = v
         self.net.online.load_state_dict(online_weights)
+        weights = copy.deepcopy(checkpoint["model"])
+        target_weights = {}
+        for k, v in weights.items():
+            if 'target' in k:
+                k = k[7:]
+                target_weights[k] = v
+        self.net.target.load_state_dict(target_weights)

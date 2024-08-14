@@ -2,3 +2,4 @@ venv
 *.pyc
 checkpoints
 xxx_testing*
+*.chkpt
