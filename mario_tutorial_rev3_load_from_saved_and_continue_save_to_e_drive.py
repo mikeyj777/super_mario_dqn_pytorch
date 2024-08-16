@@ -70,6 +70,9 @@ for e in itertools.count():
 
         # Agent performs action
         next_state, reward, done, trunc, info = env.step(action)
+        
+        if done and not info['flag_get']:
+            reward = -300
 
         # Remember
         mario.cache(state, next_state, action, reward, done)
@@ -91,5 +94,6 @@ for e in itertools.count():
 
     if (e % 20 == 0) or (e == episodes - 1):
         logger.record(episode=e, epsilon=mario.exploration_rate, step=mario.curr_step)
+        print(f"{next_state.shape},\n {reward},\n {done},\n {info}")
 
 apple = 1

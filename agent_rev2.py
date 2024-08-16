@@ -35,7 +35,8 @@ class Mario:
         self.optimizer = torch.optim.Adam(self.net.parameters(), lr=0.00025)
         self.loss_fn = torch.nn.SmoothL1Loss()
 
-        self.burnin = 1e4  # min. experiences before training
+        # self.burnin = 1e4  # min. experiences before training - MJ - running from prev trained model.  don't need much burnin
+        self.burnin = 10  # min. experiences before training
         self.learn_every = 3  # no. of experiences between updates to Q_online
         self.sync_every = 1e4  # no. of experiences between Q_target & Q_online sync
 
