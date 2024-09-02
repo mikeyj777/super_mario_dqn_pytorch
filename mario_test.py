@@ -7,7 +7,7 @@ from visual_preprocessing import *
 # NES Emulator for OpenAI Gym
 from nes_py.wrappers import JoypadSpace
 
-env = gym_super_mario_bros.make("SuperMarioBros-1-1-v0", render_mode='human', apply_api_compatibility=True)
+env = gym_super_mario_bros.make("SuperMarioBros-2-3-v0", render_mode='human', apply_api_compatibility=True)
 
 # Limit the action-space to
 #   0. walk right

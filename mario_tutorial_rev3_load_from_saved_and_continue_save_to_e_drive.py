@@ -24,30 +24,42 @@ from dqn_logging import MetricLogger
 from agent_rev2 import Mario
 
 
-# Initialize Super Mario environment (in v0.26 change render mode to 'human' to see results on the screen)
-if gym.__version__ < '0.26':
-    env = gym_super_mario_bros.make("SuperMarioBros-1-1-v0", new_step_api=True)
-else:
-    env = gym_super_mario_bros.make("SuperMarioBros-1-1-v0", render_mode='rgb', apply_api_compatibility=True)
+def get_env():
 
-# Limit the action-space to
-#   0. walk right
-#   1. jump right
-env = JoypadSpace(env, [["right"], ["right", "A"]])
+    world = random.randint(1, 8)
+    stage = random.randint(1, 4)
 
-env.reset()
-next_state, reward, done, trunc, info = env.step(action=0)
-print(f"{next_state.shape},\n {reward},\n {done},\n {info}")
+    mario_call = f'SuperMarioBros-{world}-{stage}-v0'
 
-# Apply Wrappers to environment
-env = SkipFrame(env, skip=4)
-env = GrayScaleObservation(env)
-env = ResizeObservation(env, shape=84)
-if gym.__version__ < '0.26':
-    env = FrameStack(env, num_stack=4, new_step_api=True)
-else:
-    env = FrameStack(env, num_stack=4)
+    print(f'mario is now training on world {world}, stage {stage}')
 
+    # Initialize Super Mario environment (in v0.26 change render mode to 'human' to see results on the screen)
+    if gym.__version__ < '0.26':
+        env = gym_super_mario_bros.make(mario_call, new_step_api=True)
+    else:
+        env = gym_super_mario_bros.make(mario_call, render_mode='rgb', apply_api_compatibility=True)
+
+    # Limit the action-space to
+    #   0. walk right
+    #   1. jump right
+    env = JoypadSpace(env, [["right"], ["right", "A"]])
+
+    env.reset()
+    next_state, reward, done, trunc, info = env.step(action=0)
+    print(f"{next_state.shape},\n {reward},\n {done},\n {info}")
+
+    # Apply Wrappers to environment
+    env = SkipFrame(env, skip=4)
+    env = GrayScaleObservation(env)
+    env = ResizeObservation(env, shape=84)
+    if gym.__version__ < '0.26':
+        env = FrameStack(env, num_stack=4, new_step_api=True)
+    else:
+        env = FrameStack(env, num_stack=4)
+
+    return env
+
+env = get_env()
 
 save_dir = Path("e:/coding/super_mario_dqn_387/checkpoints") / datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
 save_dir.mkdir(parents=True)
@@ -89,6 +101,10 @@ for e in itertools.count():
         # Check if end of game
         if done or info["flag_get"]:
             break
+    
+    # every 1000th episode, have mario train on a new level:
+    if e % 1000 == 0:
+        env = get_env()
 
     logger.log_episode()
 
