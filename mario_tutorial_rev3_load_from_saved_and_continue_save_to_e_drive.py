@@ -103,7 +103,7 @@ for e in itertools.count():
             break
     
     # every 1000th episode, have mario train on a new level:
-    if e % 1000 == 0:
+    if e % 1000 == 0 and e > 0:
         env = get_env()
 
     logger.log_episode()
