@@ -28,6 +28,11 @@ def get_env():
 
     world = random.randint(1, 8)
     stage = random.randint(1, 4)
+    
+    # debug xxx apple
+    # focus on training on 1-1.  training across all worlds not working too well
+    world = 1
+    stage = 1
 
     mario_call = f'SuperMarioBros-{world}-{stage}-v0'
 
@@ -85,6 +90,9 @@ for e in itertools.count():
         
         if done and not info['flag_get']:
             reward = -300
+            if info['viewport_y'] > 1:
+                reward = -1000
+                print('off-screen accident')
 
         # Remember
         mario.cache(state, next_state, action, reward, done)
@@ -100,6 +108,7 @@ for e in itertools.count():
 
         # Check if end of game
         if done or info["flag_get"]:
+            apple = 1
             break
     
     # every 1000th episode, have mario train on a new level:

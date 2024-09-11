@@ -1,0 +1,3 @@
+mutated the SMB Environment to return the byte for viewport in the info.  
+
+viewport greater than 1 means that mario is falling into a hole.  want to penalize that greater than normal death.
